@@ -1,8 +1,6 @@
 # ShadeDB
 
 ![PyPI - Version](https://img.shields.io/pypi/v/shadeDB?color=blue&label=PyPI)  
-[![Downloads](https://static.pepy.tech/badge/shadecrypt)](https://pepy.tech/project/shadeDB)
-![License](https://img.shields.io/github/license/harkerbyte/shadeDB?color=yellow)  
 ![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows%20%7C%20android-lightgrey)
 
 <a href = "https://facebook.com/harkerbyte">![Facebook](https://img.shields.io/badge/Facebook-%231877F2.svg?style=plastic&logo=Facebook&logoColor=white)</a>
@@ -10,9 +8,6 @@
 <a href="https://whatsapp.com/channel/0029Vb5f98Z90x2p6S1rhT0S">![WhatsApp](https://img.shields.io/badge/WhatsApp-25D366?style=plastic&logo=whatsapp&logoColor=white)</a>
 <a href="https://instagram.com/harkerbyte" >
 ![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=plastic&amp;logo=instagram&amp;logoColor=white) </a>
-<a href="https://x.com/shade_ofx?t=MF53V_O7YhHlDUiWqNqtRA&s=09"> 
-![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/shade_ofx?style=plastic&logo=X&label=%20&color=blue)</a> 
-
 
 
 🚀 **shadeDB**, also know as **shadecrypt**, is a lightweight, multipurpose **CLI + Python database server** — small enough to run anywhere, yet powerful enough to manage structured data with speed and simplicity.  
