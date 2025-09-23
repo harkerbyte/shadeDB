@@ -1,9 +1,17 @@
-# Shadecrypt  
+# ShadeDB
 
-![PyPI - Version](https://img.shields.io/pypi/v/shadecrypt?color=blue&label=PyPI)  
-![PyPI - Downloads](https://img.shields.io/pypi/dm/shadecrypt?color=brightgreen)  
-![License](https://img.shields.io/github/license/harkerbyte/shadecrypt?color=yellow)  
-![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows%20%7C%20android-lightgrey)  
+![PyPI - Version](https://img.shields.io/pypi/v/shadeDB?color=blue&label=PyPI)  
+[![Downloads](https://static.pepy.tech/badge/shadecrypt)](https://pepy.tech/project/shadeDB)
+![License](https://img.shields.io/github/license/harkerbyte/shadeDB?color=yellow)  
+![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows%20%7C%20android-lightgrey)
+
+<a href = "https://facebook.com/harkerbyte">![Facebook](https://img.shields.io/badge/Facebook-%231877F2.svg?style=plastic&logo=Facebook&logoColor=white)</a>
+<a href ="https://youtube.com/@harkerbyte?si=aPSIREosLJlFOmyX" >![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=plastic&logo=YouTube&logoColor=white)</a>
+<a href="https://whatsapp.com/channel/0029Vb5f98Z90x2p6S1rhT0S">![WhatsApp](https://img.shields.io/badge/WhatsApp-25D366?style=plastic&logo=whatsapp&logoColor=white)</a>
+<a href="https://instagram.com/harkerbyte" >
+![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=plastic&amp;logo=instagram&amp;logoColor=white) </a>
+<a href="https://x.com/shade_ofx?t=MF53V_O7YhHlDUiWqNqtRA&s=09"> 
+![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/shade_ofx?style=plastic&logo=X&label=%20&color=blue)</a> 
 
 
 
@@ -211,11 +219,4 @@ print(db.export_dict())
 - **Faster query returns** → implement a new algorithm to speed up query processing.
 - **Custom encryption algorithm** → device based encryption algorithm.
 - **Plugin system** → user-defined operations via Python modules.
-- **Connect with me** → using the links below for stunning updates.
 
-## 🌍 Connect  
-
-- **GitHub:** [harkerbyte](https://github.com/harkerbyte)  
-- **FB:** [facebook.com/harkerbyte](https://facebook.com/harkerbyte)  
-- **Instagram:** [instagram.com/harkerbyte](https://instagram.com/harkerbyte)  
-- **Community (WhatsApp):** [Join Here](https://chat.whatsapp.com/GuppqwKhp4H7OCaLWcOz40?mode=ac_t)  
