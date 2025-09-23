@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="shadecrypt",
+    name="shadeDB",
     version="0.1",
     description="A class oriented lightweight database with a cli wrapper for any device: store, update, copy, and remove structured data with a single command. Perfect for embedded devices, mobiles, devtools, and quick local services.",
     author="Shade",
