@@ -10,7 +10,7 @@
 ![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=plastic&amp;logo=instagram&amp;logoColor=white) </a>
 
 
-<a href="https://harkerbyte.github.io/portfolio/" title="support harkerbyte" target="_blank"><b>♟️ Mission</b></a>
+[♟️ Mission](https://harkerbyte.github.io/portfolio/)
 
 ![1000092988](https://github.com/user-attachments/assets/81e4a5be-bff2-483b-ad56-ed7090e91fbb)
 
