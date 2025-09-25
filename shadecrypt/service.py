@@ -29,7 +29,7 @@ def logger(address,status,command='get',queried='null',message='null'):
   if status == "OK":
     
     print(f'''
-{datetime.datetime.now().strftime("%Y-%M-%d %H:%m")} {blue}{status}{plain} {command.upper()} - {queried if queried != 'null' else ''}''')
+{datetime.datetime.now().strftime("%Y-%M-%d %H:%m")} {blue}{status}{plain} {command.upper()} - {queried if queried != 'null' else ''} {message if message != 'null' else ''}''')
   else:
         print(f'''
 {datetime.datetime.now().strftime("%Y-%M-%d %H:%m")} {red}{status}{plain} {command.upper()} - {queried if queried != 'null' else ''} {message}''')

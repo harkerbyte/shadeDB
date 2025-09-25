@@ -1,0 +1,14 @@
+README.md
+setup.py
+shadeDB.egg-info/PKG-INFO
+shadeDB.egg-info/SOURCES.txt
+shadeDB.egg-info/dependency_links.txt
+shadeDB.egg-info/entry_points.txt
+shadeDB.egg-info/top_level.txt
+shadecrypt/__init__.py
+shadecrypt/cli.py
+shadecrypt/config.py
+shadecrypt/core.py
+shadecrypt/exceptions.py
+shadecrypt/schedule.py
+shadecrypt/service.py
