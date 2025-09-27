@@ -1,3 +1,0 @@
-[console_scripts]
-scdb = shadecrypt.cli:main
-shadecrypt = shadecrypt.cli:main

@@ -1,5 +1,5 @@
 import os
-from shadecrypt.__init__ import instance,CONFIG_PATH
+from shadeDB.__init__ import instance,CONFIG_PATH
 
 def load_config():
   if os.path.exists(CONFIG_PATH):

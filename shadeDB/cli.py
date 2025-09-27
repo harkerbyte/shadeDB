@@ -1,7 +1,7 @@
 import sys,ast,socket,pickle
-from shadecrypt.core import shadeDB
-from shadecrypt.config import load_config,set_current_db
-from shadecrypt.service import is_true,server,red,blue,green,plain,yellow
+from shadeDB.core import shadeDB
+from shadeDB.config import load_config,set_current_db
+from shadeDB.service import is_true,server,red,blue,green,plain,yellow
 red = '\x1b[1;31m'
 green = '\x1b[1;32m'
 plain = '\x1b[1;0m'
@@ -130,7 +130,7 @@ def correct(value):
 def main():
   loaded = load_config()
   if len(sys.argv) < 2:
-    print('Usage: shadecrypt [args...]')
+    print('Usage: shadeDB [args...]')
     sys.exit(1)
   
   command = sys.argv[1]
@@ -142,7 +142,7 @@ def main():
   
   if command == "init":
     if not args:
-      print(f'Usage: shadecrypt init db_path/db_name.scdb  Enter : backup ; if you intend to allow backups otherwise leave empty \n\n{blue}E{plain}xample: shadecrypt init mydb.scdb backup')
+      print(f'Usage: shadeDB init db_path/db_name.scdb  Enter : backup ; if you intend to allow backups otherwise leave empty \n\n{blue}E{plain}xample: shadeDB init mydb.scdb backup')
       sys.exit(1)
     db_path = args[0]
     bkup = True if len(args)>1 and args[1] == "backup" else False
@@ -150,7 +150,7 @@ def main():
       shadedb = shadeDB(db_path,backup=bkup)
       set_current_db(db_path,backup=bkup)
       if shadedb.status() == "Active and running...":
-        print(f'Shadecrypt : initialised {db_path} and already set as default database disk.')
+        print(f'shadeDB : initialised {db_path} and already set as default database disk.')
       pass
     
     return
@@ -161,9 +161,9 @@ def main():
       bkup = True if len(args) > 1 and args[1] == "backup"  else False
       if is_native(db_path):
         set_current_db(db_path,backup=bkup)
-        print(f'shadecrypt: default db has been set to {green}{db_path}{plain}\nAllow backup : {bkup}')
+        print(f'shadeDB: default db has been set to {green}{db_path}{plain}\nAllow backup : {bkup}')
     else:
-      print(f'Usage: to change your current database disk\n{blue}E{plain}xample: shadecrypt use newdb.scdb backup ')
+      print(f'Usage: to change your current database disk\n{blue}E{plain}xample: shadeDB use newdb.scdb backup ')
     pass
   if command == "ls":
     print('Current db :%s'%load_config().get("current_db",None))
@@ -183,11 +183,11 @@ def main():
     else:
       print(f"""
 Usage: 
-shadecrypt get key multiple
-shadecrypt id key - to fetch the given key's id
+shadeDB get key multiple
+shadeDB id key - to fetch the given key's id
 
-{blue}E{plain}xample : shadecrypt get shade multiple
-{blue}E{plain}xample2 : shadecrypt get shade.age 
+{blue}E{plain}xample : shadeDB get shade multiple
+{blue}E{plain}xample2 : shadeDB get shade.age 
       
 {yellow}O{plain}nly provide shade.age fetch the specified data from the key row - shade
       """)
@@ -206,12 +206,12 @@ Usage:
 {red}s{plain}hadecrypt stop - to close server remotely
 {red}s{plain}hadecrypt clear - to clear the database record
 
-{blue}E{plain}xample : shadecrypt remove shade or shadecrypt remove shade.age - remove the specified row data
+{blue}E{plain}xample : shadeDB remove shade or shadeDB remove shade.age - remove the specified row data
 
-{red}E{plain}xample2 : shadecrypt stop - remotely close the database
-{red}E{plain}xample3 : shadecrypt clear - clear database
+{red}E{plain}xample2 : shadeDB stop - remotely close the database
+{red}E{plain}xample3 : shadeDB clear - clear database
 
-{yellow}R{plain}ead the full documentation at \'shadecrypt pypi\' for a better understanding
+{yellow}R{plain}ead the full documentation at \'shadeDB pypi\' for a better understanding
       """)
   
   if command == "update":
@@ -233,11 +233,11 @@ Usage:
 
 {red}s{plain}hadecrypt update key value
 
-{blue}E{plain}xample : shadecrypt update shade ola - single string
-{blue}E{plain}xample2 : shadecrypt update shade ['software engineer','shell','pentester','inventor'] - multiple values
-{blue}E{plain}xample3 : shadecrypt update shade {{"age":15,"status":"active","passion":"solving problems","skills":["python","js","engineering"]}} - mutiple key, value to populate the key row
+{blue}E{plain}xample : shadeDB update shade ola - single string
+{blue}E{plain}xample2 : shadeDB update shade ['software engineer','shell','pentester','inventor'] - multiple values
+{blue}E{plain}xample3 : shadeDB update shade {{"age":15,"status":"active","passion":"solving problems","skills":["python","js","engineering"]}} - mutiple key, value to populate the key row
 
-{yellow}R{plain}ead the full documentation at \'shadecrypt pypi\' for a better understanding
+{yellow}R{plain}ead the full documentation at \'shadeDB pypi\' for a better understanding
       """)
   
   if command == "pull":

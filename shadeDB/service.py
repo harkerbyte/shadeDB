@@ -1,6 +1,6 @@
 import socket,pickle,threading,random,string,datetime
-from shadecrypt.core import shadeDB
-from shadecrypt.__init__ import instance
+from shadeDB.core import shadeDB
+from shadeDB.__init__ import instance
 red = '\x1b[1;31m'
 green = '\x1b[1;32m'
 plain = '\x1b[1;0m'

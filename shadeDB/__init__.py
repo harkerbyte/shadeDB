@@ -1,11 +1,11 @@
 import os
-from shadecrypt.core import shadeDB
+from shadeDB.core import shadeDB
 
 try:
-  os.mkdir('~/.shadecrypt/',0o744)
+  os.mkdir('~/.shadeDB/',0o744)
 except Exception as error:
   pass
-CONFIG_PATH = '~/.shadecrypt/config.scdb'
+CONFIG_PATH = '~/.shadeDB/config.scdb'
 if not os.path.exists(CONFIG_PATH):
   with open(CONFIG_PATH,"w"):
     pass

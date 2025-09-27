@@ -1,6 +1,6 @@
 import os,re,threading,time,random,string
-from shadecrypt.schedule import Work
-from shadecrypt.exceptions import *
+from shadeDB.schedule import Work
+from shadeDB.exceptions import *
 
 hologram = """\x1b[1;34m
 Dev : shade\n
