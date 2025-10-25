@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="shadeDB",
-    version="0.2.7",
+    version="0.2.8",
     description="A lightweight, class-oriented database server with a CLI wrapper for instant querying on any device.Store, update, fetch, and remove structured data with a single command. Designed for speed and simplicity, it’s perfect for embedded systems, mobile devices, developer tools, and quick local services.",
     author="Shade",
     author_email="adesolasherifdeen3@gmail.com",
