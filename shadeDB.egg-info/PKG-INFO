@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: shadeDB
-Version: 0.2.6
+Version: 0.2.7
 Summary: A lightweight, class-oriented database server with a CLI wrapper for instant querying on any device.Store, update, fetch, and remove structured data with a single command. Designed for speed and simplicity, it’s perfect for embedded systems, mobile devices, developer tools, and quick local services.
 Author: Shade
 Author-email: adesolasherifdeen3@gmail.com
