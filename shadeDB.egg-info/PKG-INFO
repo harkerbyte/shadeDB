@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: shadeDB
-Version: 0.2.5
+Version: 0.2.6
 Summary: A lightweight, class-oriented database server with a CLI wrapper for instant querying on any device.Store, update, fetch, and remove structured data with a single command. Designed for speed and simplicity, it’s perfect for embedded systems, mobile devices, developer tools, and quick local services.
 Author: Shade
 Author-email: adesolasherifdeen3@gmail.com
@@ -49,8 +49,6 @@ Dynamic: summary
 ![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=flat&amp;logo=instagram&amp;logoColor=white) </a>
 
 [♟️ Mission](https://harkerbyte.github.io/portfolio/)
-
-![1000094092](https://github.com/user-attachments/assets/da83cb25-8fad-4ad1-a326-bc6168b62009)
 
 
 🚀 **shadeDB**, also know as **shadecrypt**, is a lightweight, multipurpose **CLI + Python database server** — small enough to run anywhere, yet powerful enough to manage structured data with speed and simplicity.  
