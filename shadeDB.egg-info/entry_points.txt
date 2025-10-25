@@ -1,0 +1,3 @@
+[console_scripts]
+scdb = shadeDB.cli:main
+shadeDB = shadeDB.cli:main
