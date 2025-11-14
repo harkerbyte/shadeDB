@@ -105,9 +105,14 @@
     border-left-color: #00ff99;
     box-shadow: 0 0 25px rgba(0,255,153,0.3);
   }
+  .timeline-item.progress {
+    border-left-color: #00ff99;
+    box-shadow: 0 0 15px rgba(0,215,30,100);
+  }
 
   .timeline-item h3 {color: #00d4ff; margin-bottom: 0.5rem;}
   .timeline-item.passed h3 {color: #00ff99;}
+  .timeline-item.progress h3 {color: #00ff99;}
   .timeline-item p {color: #aaa;}
 
 
@@ -159,7 +164,7 @@
   <p>That inefficiency sparked a new mission — to build a faster, lighter, memory-conscious system that could compete with and outperform traditional databases.</p>
 
   <div class="image-holder">
-    <img src="imgs/shadeDB_log.jpg" alt="shadeDB development timeline">
+    <img src="imgs/shadeDb_log.jpg" alt="shadeDB development timeline">
     <div class="image-caption">shadeDB's early architecture & performance logs</div>
   </div>
 </section>
@@ -201,7 +206,17 @@
       <h3>shadeDB Beta Release</h3>
       <p>Status: Completed successfully — internal testing phase concluded.</p>
     </div>
-
+    
+    <div class="timeline-item progress">
+      <h3>shadeDB early test phase</h3>
+      <p>Development phase testing by the team, to ensure consistency.</p>
+    </div>
+    
+    <div class="timeline-item">
+      <h3>shadeDB community test phase</h3>
+      <p>First prototype release ( cli ), open to our community member and externals.</p>
+    </div>
+    
     <div class="timeline-item">
       <h3>shadeDB Prototype Release</h3>
       <p>Implementing distributed storage and performance enhancements.</p>
