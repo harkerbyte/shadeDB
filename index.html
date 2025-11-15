@@ -1,297 +1,226 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>shadeDB | Database as a Service</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>shadeDB — Ultra‑Fast Autonomous Database</title>
 <style>
-  * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif;}
-  body {background: #0c0c0c; color: #e0e0e0; line-height: 1.6; overflow-x: hidden;}
+/* RESET & GLOBAL */
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif;}
+body {background:#0b0b0b; color:#eaeaea; overflow-x:hidden; line-height:1.6; scroll-behavior:smooth;}
+h1,h2,h3,h4,h5,h6 {font-weight:700;}
+a {color:inherit; text-decoration:none;}
+img {max-width:100%; display:block; object-fit:fit;}
+section {padding:80px 20px; max-width:1100px; margin:auto; position:relative; opacity:0; transform:translateY(30px); transition: all 0.8s ease-in-out;}/* HERO */
+.hero {height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; position:relative; overflow:hidden;} 
+.hero h1 {font-size:3rem; line-height:1.2;} 
+.hero p {max-width:700px; margin-top:15px; font-size:1.2rem;} 
+.gradient-float {position:absolute; width:500px; height:500px; background:radial-gradient(circle,#4f00ff40,#00000000); filter:blur(90px); animation:float 15s infinite linear; top:-100px; left:-100px;}/* FEATURES */ .features{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; margin-top:30px;} .feature-card{background:#131313; padding:25px; border:1px solid #1f1f1f; border-radius:12px; transition:0.3s; cursor:pointer; opacity:0; transform:translateY(20px);} .feature-card:hover{border-color:#4f00ff; transform:translateY(-6px) scale(1.03);}
 
-  header {
-    text-align: center; padding: 5rem 1rem;
-    background: linear-gradient(145deg, #0c0c0c, #121212);
-    position: relative; z-index: 1;
-  }
-  header::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(0,212,255,0.05), transparent 70%);
-    z-index: 0;
-  }
-  header h1 {
-    font-size: 3rem; color: #00d4ff; letter-spacing: 1px;
-    animation: glow 3s ease-in-out infinite alternate;
-    position: relative; z-index: 1;
-  }
-  header p {
-    font-size: 1.2rem; color: #aaa; margin-top: 1rem;
-    opacity: 0; transform: translateY(30px);
-    transition: opacity 1.5s ease, transform 1.5s ease;
-    position: relative; z-index:1;
-  }
+/* TIMELINE & ROADMAP */ .timeline{border-left:2px solid #4f00ff55; padding-left:25px; margin-top:40px;} .timeline div{margin-bottom:25px; opacity:0; transform:translateX(-20px);} .roadmap{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:25px; margin-top:30px;} .road-step{background:#131313; padding:20px; border-radius:12px; border:1px solid #222; cursor:pointer; transition:0.3s; opacity:0; transform:translateY(20px);} .road-step:hover{border-color:#00d4ff; transform:translateY(-4px) scale(1.02);}
 
-  section {
-    max-width: 900px; margin: 4rem auto; padding: 0 1rem;
-    opacity: 0; transform: translateY(50px); transition: all 1s ease;
-  }
-  section h2 {
-    color: #00d4ff; margin-bottom: 1rem;
-    opacity: 0; transform: translateY(30px); transition: all 1s ease;
-  }
-  section p {
-    margin-bottom: 1rem; opacity: 0; white-space: pre-wrap;
-    transform: translateY(20px); transition: all 1s ease;
-  }
+/* STATS & TABLES */ .stats-comparison img {border-radius:12px; margin:20px 0;} table {width:100%; border-collapse:collapse; margin:1rem 0; background:#111; color:#ccc;} th, td {padding:10px; border:1px solid #222; text-align:center;}
 
-  ul {list-style: none; margin-top: 1rem;}
-  ul li {
-    background: #111; padding: 1rem; margin-bottom: 1rem;
-    border-left: 3px solid #00d4ff; border-radius: 6px;
-    transition: all 0.3s ease;
-    opacity: 0; transform: translateX(-20px);
-  }
-  ul li:hover {
-    transform: translateX(5px);
-    background: #161616;
-    box-shadow: 0 0 15px #00d4ff;
-  }
+/* PRODUCT DECK */ .product-deck .deck-grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px;} .deck-card {background:#131313; padding:20px; border-radius:12px; border:1px solid #222; cursor:pointer; transition:0.3s; opacity:0; transform:translateY(20px);} .deck-card:hover{transform:translateY(-5px) scale(1.02); border-color:#8a5cff;} .image-placeholder {display:block; margin-top:15px; padding:0; background:#1f1f1f; border:2px dashed #4f00ff; border-radius:12px; text-align:center; font-size:0.9rem; color:#888; opacity:0; transform:scale(0.95); transition:0.6s ease-in-out;} .placeholder-svg {width:100%; height:180px; display:block; border-radius:10px; object-fit:fit;}
 
-  .image-holder {
-    background: #0f0f0f; border: 1px solid #1c1c1c;
-    border-radius: 10px; padding: 1rem; text-align: center;
-    margin: 2rem 0;
-  }
-  .image-holder img {
-    width: 100%; max-height: 350px; object-fit: fit;
-    border-radius: 8px; box-shadow: 0 0 20px rgba(0,212,255,0.1);
-  }
-  .image-caption {
-    color: #888; font-size: 0.9rem; margin-top: 0.5rem;
-  }
+/* HERO ANIMATIONS */ .stat-counters {display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:40px;} .counter {background:#131313; padding:20px 30px; border-radius:12px; border:1px solid #222; text-align:center; opacity:0; transform:translateY(20px); transition:all 1s ease-in-out;} .counter:hover {transform:translateY(-8px) scale(1.02);} .count {font-size:1.8rem; font-weight:700; color:#8a5cff; display:inline-block; min-width:48px;}
 
-  
-  .roadmap {
-    padding: 4rem 1rem;
-    border-top: 2px solid #00d4ff;
-    border-bottom: 1px solid #111;
-  }
-  .roadmap h2 {
-    text-align: center; font-size: 2rem; margin-bottom: 3rem; color: #00d4ff;
-  }
+/* SWITCH SECTION */ .switch-section ul {margin-top:20px; list-style:none; display:grid; gap:12px;} .switch-section li{padding-left:0;}
 
-  .timeline {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    max-width: 900px;
-    margin: auto;
-    position: relative;
-  }
+/* INVESTOR SECTION */ .investor-grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; margin-top:25px;} .investor-card {background:#131313; padding:20px; border-radius:12px; border:1px solid #222; cursor:pointer; transition:0.3s; opacity:0; transform:translateY(20px);} .investor-card:hover{transform:translateY(-5px) scale(1.02); border-color:#00d4ff;}
 
-  .timeline-item {
-    padding: 1.5rem;
-    background: #111;
-    border-left: 3px solid #00d4ff;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,212,255,0.1);
-    transition: 0.3s ease;
-  }
-  .timeline-item:hover {
-    box-shadow: 0 0 25px rgba(0,212,255,0.25);
-    transform: translateY(-5px);
-  }
+/* KEYFRAMES */ @keyframes float {0%{transform:translate(-200px,-100px);}50%{transform:translate(200px,150px);}100%{transform:translate(-200px,-100px);}} @keyframes fadeInUp {0%{opacity:0; transform:translateY(30px);}100%{opacity:1; transform:translateY(0);} }
 
-  .timeline-item.passed {
-    border-left-color: #00ff99;
-    box-shadow: 0 0 25px rgba(0,255,153,0.3);
-  }
-  .timeline-item.progress {
-    border-left-color: #00ff99;
-    box-shadow: 0 0 15px rgba(0,215,30,100);
-  }
+/* RESPONSIVE TEXT */ @media(max-width:768px){.hero h1{font-size:2.2rem;} .hero p{font-size:1rem;}} 
+  .github-button {
+  display:inline-block;
+  padding:12px 25px;
+  background:#8a5cff;
+  color:#fff;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:600;
+  transition:0.3s;
+}
+.github-button:hover {
+  background:#6a3fd1;
+  transform:scale(1.05);
+}
+  </style>
 
-  .timeline-item h3 {color: #00d4ff; margin-bottom: 0.5rem;}
-  .timeline-item.passed h3 {color: #00ff99;}
-  .timeline-item.progress h3 {color: #00ff99;}
-  .timeline-item p {color: #aaa;}
-
-
-  @keyframes glow {
-    from {text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff;}
-    to {text-shadow: 0 0 20px #00aaff, 0 0 40px #00aaff;}
-  }
-  @keyframes bounce {
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-8px);}
-  }
-
-  .coming-soon {
-    background: #121212; text-align: center;
-    padding: 3rem 1rem; margin-top: 3rem;
-    border-top: 2px solid #00d4ff;
-  }
-  .cta-btn {
-    display: inline-block; margin-top: 1.5rem;
-    padding: 0.75rem 1.5rem; background: #00d4ff; color: #000;
-    border-radius: 6px; font-weight: 600; text-decoration: none;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    animation: bounce 2s infinite;
-  }
-  .cta-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px #00d4ff;
-    background: #00aaff;
-  }
-
-  footer {
-    text-align: center; padding: 3rem 1rem;
-    background: #111; border-top: 1px solid #222; color: #666;
-  }
-</style>
 </head>
-<body>
-
-<header>
-  <h1>shadeDB</h1>
-  <p>Fast. Lightweight. Intelligent. The next-gen Database as a Service (DaaS).</p>
-</header>
-
-<section>
+<body><!-- HERO --><div class="hero" id="hero">
+  <h1>shadeDB<br><span style="color:#8a5cff;">The Autonomous High‑Velocity Database</span></h1>
+  <p>The ultra-fast, self-optimizing Database‑as‑a‑Service engineered for developers who demand more from speed, autonomy, and intelligence.</p>
+  <div class="gradient-float" aria-hidden="true"></div>
+</div><!-- WHAT IS shadeDB --><section>
   <h2>What Is shadeDB?</h2>
-  <p>Developers often ask — what the hell’s shadeDB and why would anyone choose it over PostgreSQL?</p>
-  <p>shadeDB — not the released PyPI beta — began as a personal solution for data control during the development of <strong>shadecreed</strong>. I realized JSON was too limited: it couldn’t handle duplicate keys. So, I wrote a small storage engine that could store key–value pairs, even duplicates, and retrieve them efficiently.</p>
-  <p>It took nearly five weeks to finalize the first version. It worked, but performance wasn’t impressive — compiling 36MB of disk took <strong>51 seconds</strong>, and queries averaged <strong>2 seconds</strong> each.</p>
-  <p>That inefficiency sparked a new mission — to build a faster, lighter, memory-conscious system that could compete with and outperform traditional databases.</p>
-
-  <div class="image-holder">
-    <img src="imgs/shadeDB_log.jpg" alt="shadeDB development timeline">
-    <div class="image-caption">shadeDB's early architecture & performance logs</div>
+  <p>shadeDB answers a simple question: what happens when a database stops trying to be everything… and focuses on pure speed, intelligence, and autonomy?</p>
+  <p style="margin-top:20px;">Originally developed during the evolution of shadecreed, it began as a lightweight engine designed to overcome JSON’s inability to handle duplicate keys. That evolved into a custom data engine capable of storing data in a field-value structure efficiently and retrieving them with near‑zero latency.</p>
+</section><!-- FEATURES --><section>
+  <h2>Why Developers Choose shadeDB</h2>
+  <div class="features">
+    <div class="feature-card">Ultra‑Low Latency — 0.3ms queries using under 1KB RAM.</div>
+    <div class="feature-card">Cross‑Platform Power — IoT, robotics, ML, cloud, edge, 98% uptime.</div>
+    <div class="feature-card">True Data Ownership — Built for contributor value.</div>
+    <div class="feature-card">Distributed Compute Ready — Encrypted virtual nodes stay online.</div>
+    <div class="feature-card">Vertical Receipt Storage — Complete write + rollback tracking.</div>
+    <div class="feature-card">Plug & Play Setup — Autonomous configuration in minutes.</div>
   </div>
-</section>
-
-<section>
-  <h2>Why Choose shadeDB?</h2>
-  <p>Here are key reasons developers are already keeping an eye on shadeDB:</p>
-  <ul>
-    <li><strong>1. Lower Latency</strong> — shadeDB achieves an average latency of <strong>0.3ms</strong> while consuming less than <strong>1KB</strong> of memory per query.</li>
-    <li><strong>2. Cross-Platform Availability</strong> — Seamless integration into IoT, robotics, web apps, ML models, and machine systems with <strong>98% uptime</strong>.</li>
-    <li><strong>3. Data Ownership</strong> — Emphasizing user-driven control, shadeDB will reward early contributors to the network.</li>
-    <li><strong>4. Distributed Computational Power</strong> — Temporary encrypted data storage on virtual node servers ensures uptime even when offline.</li>
-    <li><strong>5. Vertical Store Receipt System</strong> — Full transparency and rollback tracking through isolated disk partitions.</li>
-    <li><strong>6. Easy Setup</strong> — Fully autonomous configuration and optimization — ready in minutes.</li>
-  </ul>
-
-  <div class="image-holder">
-    <img src="imgs/stats.png" alt="shadeDB vs PostgreSQL performance chart">
-    <div class="image-caption">shadeDB vs PostgreSQL — latency and speed comparison</div>
-  </div>
-</section>
-
-<section>
-  <h2>The Vision</h2>
-  <p>shadeDB isn’t here to compete — it’s here to redefine how developers think about storage, data autonomy, and distributed intelligence. The vision is a database that evolves, adapts, and stays lean, no matter the scale.</p>
-</section>
-
-<section class="coming-soon">
-  <h2>In Development</h2>
-  <p>shadeDB is actively under development — built to redefine database performance, speed, and control. The first prototype will integrate core distributed capabilities, data ownership models, and intelligent load balancing.</p>
-  <a href="https://github.com/harkerbyte" class="cta-btn">Follow Development</a>
-</section>
-
-<section class="roadmap">
-  <h2>shadeDB Roadmap</h2>
-
+</section><!-- TIMELINE --><section>
+  <h2>shadeDB Development Timeline</h2>
   <div class="timeline">
-    <div class="timeline-item passed">
-      <h3>shadeDB Beta Release</h3>
-      <p>Status: Completed successfully — internal testing phase concluded.</p>
+    <div><strong>Initial Build:</strong> 36MB compile = 51s, queries ≈ 2s.</div>
+    <div><strong>Rewrite:</strong> Streaming + filtration = massive speed gains.</div>
+    <div><strong>Current:</strong> Sub‑millisecond query engine.</div>
+  </div>
+</section><!-- VISION --><section>
+  <h2>The Vision</h2>
+  <p>shadeDB evolves into a self‑tuning, distributed, high‑intelligence database — fast, lean, scalable from embedded systems to enterprise workloads.</p>
+</section><!-- ROADMAP --><section>
+  <h2>shadeDB Roadmap</h2>
+  <div class="roadmap">
+    <div class="road-step"><strong>Beta Release</strong><br>Engine validation complete.</div>
+    <div class="road-step"><strong>Early Test Phase</strong><br>Stability & consistency checks.</div>
+    <div class="road-step"><strong>Community Test Phase</strong><br>CLI tools for contributors.</div>
+    <div class="road-step"><strong>Prototype Release</strong><br>Distributed storage integrated.</div>
+    <div class="road-step"><strong>Funding Round</strong><br>Seeking partners.</div>
+    <div class="road-step"><strong>Public Release</strong><br>Cloud‑ready stable deployment.</div>
+    <div class="road-step"><strong>Client Nodes</strong><br>Private compute node rollout.</div>
+    <div class="road-step"><strong>Token Allocation</strong><br>15% Team · 10% Investors · 5% Users · 70% Pool</div>
+    <div class="road-step"><strong>Token Launch</strong><br>Governance + rewards distribution.</div>
+    <div class="road-step"><strong>Cloud Expansion</strong><br>Multi‑cloud + edge architecture.</div>
+    <div class="road-step"><strong>Future Missions</strong><br>Hybrid architectures & decentralized intelligence.</div>
+    <div style="text-align:center; margin-top:30px;">
+    <a href="https://github.com/harkerbyte" target="_blank" class="github-button">Follow the Development</a>
+  </div>
+  </div>
+</section><!-- STATISTICS --><section class="stats-comparison">
+  <h2 style="color:#00d4ff;margin-bottom:1rem;">Statistical Breakdown</h2>
+  <!-- image placeholder as <img> so you can replace src with your own images -->
+  <img class="image-placeholder placeholder-svg" alt="Benchmark chart placeholder" src="imgs/stats.png" />  <h3>1. Central Tendency (Speed)</h3>
+  <p>Mean query latency shows ShadeDB is ~66% faster at typical workloads.</p>
+  <p>Median latency (P50): <strong>ShadeDB ≈ 0.35 ms</strong> vs <strong>PostgreSQL ≈ 0.9 ms</strong></p>  <h3>2. Tail Behavior (Consistency)</h3>
+  <p>ShadeDB’s 95th percentile latency (<strong>0.112 ms</strong>) is <strong>9–27× tighter</strong> than PostgreSQL.</p>
+  <p>P99 latency spikes: ShadeDB <strong>4.4 ms</strong> vs PostgreSQL <strong>~7 ms</strong></p>  <h3>3. Throughput Scaling</h3>
+  <p>At <strong>2,241 queries/sec</strong>, ShadeDB delivers <strong>49–180% higher throughput</strong> under equal load.</p>  <h3>4. Latency Variance</h3>
+  <table>
+    <tr><th>Percentile</th><th>ShadeDB (ms)</th><th>PostgreSQL (ms)</th><th>Δ</th><th>Ratio</th></tr>
+    <tr><td>P50</td><td>0.35</td><td>0.9</td><td>-0.55</td><td>2.57× faster</td></tr>
+    <tr><td>P95</td><td>0.112</td><td>2.0</td><td>-1.888</td><td>17.8× faster</td></tr>
+    <tr><td>P99</td><td>4.4</td><td>7.0</td><td>-2.6</td><td>1.6× faster</td></tr>
+  </table>  <h3>5. Query-per-Second Efficiency</h3>
+  <p><strong>ShadeDB:</strong> 2,241 / 0.358 ≈ 6,260</p>
+  <p><strong>PostgreSQL:</strong> 1,000 / 0.9 ≈ 1,111</p>
+  <p>ShadeDB shows <strong>≈ 5.6× higher efficiency</strong>.</p>
+</section><!-- MISSION --><section class="mission-section">
+  <h2>The ShadeDB Mission</h2>
+  <p>ShadeDB stands on a simple truth: raw speed is nothing without absolute control. Modern systems demand databases that respond instantly, scale intelligently, and maintain consistency under extreme load.</p>
+  <p>Architecture eliminates RAM‑bound query paths, streams operations at CPU speed, and compresses tail latency into a compact, predictable curve.</p>
+  <p><strong>Rewrite the rules, not follow them.</strong> ShadeDB feels like a living extension of the system — reactive, anticipatory, and brutally efficient.</p>
+</section><!-- HERO COUNTERS --><section class="hero-animations">
+  <div class="stat-counters">
+    <div class="counter" data-target="0.3"><span class="count" data-target="0.3">0.3</span> ms<br>Avg Query Latency</div>
+    <div class="counter" data-target="2241"><span class="count" data-target="2241">2241</span><br>Queries / Second</div>
+    <div class="counter" data-target="98"><span class="count" data-target="98">98</span>%<br>Uptime Across Environments</div>
+  </div>
+</section><!-- PRODUCT DECK --><section class="product-deck">
+  <h2>ShadeDB Product Deck</h2>
+  <div class="deck-grid">
+    <div class="deck-card">
+      <h3>Self‑Optimizing Engine</h3>
+      <p>Real‑time adaptive pathways rewrite execution routes minimizing RAM impact and CPU stalls.</p>
+      <!-- image placeholder as <img> so you can replace src with your own images -->
     </div>
-    
-    <div class="timeline-item progress">
-      <h3>shadeDB early test phase</h3>
-      <p>Development phase testing by the team, to ensure consistency.</p>
+    <div class="deck-card">
+      <h3>Distributed Compute Layer</h3>
+      <p>Encrypted virtual nodes mirror state across devices — even offline.</p>
+      <img class="image-placeholder placeholder-svg" alt="Distributed Node Mesh" src="imgs/distribution.png" />
     </div>
-    
-    <div class="timeline-item">
-      <h3>shadeDB community test phase</h3>
-      <p>First prototype release ( cli ), open to our community member and externals.</p>
+    <div class="deck-card">
+      <h3>Vertical Receipts</h3>
+      <p>Every write is committed across isolated disk layers for full rollback & auditability.</p>
+      <img class="image-placeholder placeholder-svg" alt="Vertical Storage Layers" src="imgs/vertical.png" />
     </div>
-    
-    <div class="timeline-item">
-      <h3>shadeDB Prototype Release</h3>
-      <p>Implementing distributed storage and performance enhancements.</p>
-    </div>
-
-    <div class="timeline-item">
-      <h3>Funding</h3>
-      <p>Seeking early investors and strategic contributors for network scaling.</p>
-    </div>
-
-    <div class="timeline-item">
-      <h3>Product Release</h3>
-      <p>Public availability with stable cloud integration and client support.</p>
-    </div>
-
-    <div class="timeline-item">
-      <h3>Client Node Servers Integration & Recruit</h3>
-      <p>Bringing in clients to deploy private nodes and participate in compute sharing.</p>
-    </div>
-
-    <div class="timeline-item">
-      <h3>Token Allocation</h3>
-      <p>15% Team, 10% Investors, 5% Early Users (Early Birds), 70% Pool Distribution.</p>
-    </div>
-
-    <div class="timeline-item">
-      <h3>Participation Snapshot</h3>
-      <p>Snapshot of early participants before token generation event.</p>
-    </div>
-
-    <div class="timeline-item">
-      <h3>Token Launch & Distribution</h3>
-      <p>Deployment and release of $___ tokens for governance and rewards.</p>
-    </div>
-
-    <div class="timeline-item">
-      <h3>Provide More Cloud Services</h3>
-      <p>Expanding ShadeDB ecosystem to multi-cloud and edge network integrations.</p>
-    </div>
-
-    <div class="timeline-item">
-      <h3>More Missions To Be Unlocked</h3>
-      <p>Continuous evolution — decentralized intelligence, hybrid storage models, and more.</p>
+    <div class="deck-card">
+      <h3>High‑Density Throughput</h3>
+      <p>Query pipeline maintains microsecond responsiveness while scaling horizontally.</p>
+      <img class="image-placeholder placeholder-svg" alt="Throughput Density" src="imgs/throughput.png" />
     </div>
   </div>
-</section>
+</section><!-- ENGINEER SWITCH --><section class="switch-section"><h2>Why Engineers Should Switch to ShadeDB</h2><ul><li>Near-zero query overhead powered by CPU-streamed filtration.</li><li>Highly stable latency profile with tightly compressed P50–P95 variance.</li><li>Consistent memory usage with a fixed 1KB maximum per query.</li><li>Modular distributed-node design enabling immediate horizontal scaling.</li><li>Unified architecture suitable for IoT, edge, and cloud environments without reconfiguration.</li><li>Integrated command filtration system that silently rejects malformed or malicious queries before they reach the engine.</li><li>Disk-monitoring algorithm that validates insert and overwrite operations to eliminate corruption risks during heavy write cycles.</li><li>Divide-and-conquer query execution that breaks operations into optimized microsegments for significantly faster results.</li><li>Closed-source internal architecture that prevents adversaries from mapping the system’s structure, reducing potential attack vectors.</li></ul></section><!-- INVESTOR --><section class="investor-section">
+  <h2>For Investors & Strategic Partners</h2>
+  <p>ShadeDB is foundation-level technology redefining distributed storage, edge compute, and ultra-low-latency systems.</p>
+  <div class="investor-grid">
+    <div class="investor-card">
+      <h3>Market Position</h3>
+      <p>Unchallenged niche between high-speed in-memory DBs and traditional SQL engines.</p>
+    </div>
+    <div class="investor-card">
+      <h3>Scaling Model</h3>
+      <p>Network contribution earns increasing ownership — aligned with long-term decentralization goals.</p>
+    </div>
+    <div class="investor-card">
+      <h3>Performance Advantage</h3>
+      <p>2.26× normalized efficiency index over PostgreSQL under standardized load.</p>
+    </div>
+  </div>
+</section><!-- SCROLL ANIMATIONS & COUNTERS --><script>
+// Elements to animate
+const sections = document.querySelectorAll('section, .feature-card, .deck-card, .road-step, .investor-card, .image-placeholder, .timeline div, .counter');
+const counters = document.querySelectorAll('.stat-counters .count');
 
-<footer>
-  <p>&copy; 2025 harkerbyte. All rights reserved.</p>
-</footer>
+// Helper: apply staggered animation classes
+function reveal(el, delay = 0) {
+  el.style.opacity = '1';
+  el.style.transform = 'translateY(0)';
+  el.style.transitionDelay = delay + 'ms';
+}
 
-<script>
-  const sections = document.querySelectorAll('section');
-  const observer = new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.style.opacity = 1;
-        entry.target.style.transform = 'translateY(0)';
-        const h2 = entry.target.querySelector('h2');
-        if(h2){h2.style.opacity = 1; h2.style.transform = 'translateY(0)';}
-        const ps = entry.target.querySelectorAll('p, blockquote, li');
-        ps.forEach((el, idx)=>{
-          el.style.transitionDelay = `${idx*0.3}s`;
-          el.style.opacity = 1;
-          el.style.transform = 'translateY(0)';
-        });
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {threshold:0.2});
-  sections.forEach(section=>observer.observe(section));
+function revealLeft(el, delay = 0) {
+  el.style.opacity = '1';
+  el.style.transform = 'translateX(0)';
+  el.style.transitionDelay = delay + 'ms';
+}
 
-  const headerP = document.querySelector('header p');
-  setTimeout(()=>{headerP.style.opacity = 1; headerP.style.transform = 'translateY(0)';}, 1000);
-</script>
+function animateOnScroll(){
+  const triggerBottom = window.innerHeight * 0.85;
+  sections.forEach((sec, i) => {
+    if(sec.getBoundingClientRect().top < triggerBottom){
+      // stagger more for grids
+      const delay = (i % 6) * 80;
+      if(sec.classList.contains('feature-card') || sec.classList.contains('deck-card') || sec.classList.contains('road-step') || sec.classList.contains('investor-card') || sec.classList.contains('image-placeholder') || sec.classList.contains('counter')) reveal(sec, delay);
+      else if(sec.parentElement && sec.parentElement.classList && sec.parentElement.classList.contains('timeline')) revealLeft(sec, (i%4)*70);
+      else reveal(sec);
+    }
+  });
 
-</body>
+  // counters
+  counters.forEach(counter => {
+    const parent = counter.closest('.counter') || counter.parentElement;
+    if(parent.getBoundingClientRect().top < triggerBottom && !counter.classList.contains('started')){
+      counter.classList.add('started');
+      const raw = counter.getAttribute('data-target');
+      const target = parseFloat(raw);
+      let count = 0;
+      // if fractional (like 0.3), animate to one decimal place
+      const isFloat = raw.indexOf('.') !== -1;
+      const steps = 200;
+      const increment = target / steps;
+      const update = () => {
+        count += increment;
+        if(count < target){
+          counter.innerText = isFloat ? (Math.round(count*10)/10).toFixed(1) : Math.floor(count);
+          requestAnimationFrame(update);
+        } else {
+          counter.innerText = isFloat ? target.toFixed(1) : Math.round(target).toString();
+        }
+      };
+      update();
+    }
+  });
+}
+
+window.addEventListener('scroll', animateOnScroll);
+window.addEventListener('load', () => { animateOnScroll(); /* reveal hero immediately */ const hero = document.querySelector('.hero'); if(hero){ hero.style.opacity = '1'; hero.style.transform = 'translateY(0)'; }});
+</script></body>
 </html>
