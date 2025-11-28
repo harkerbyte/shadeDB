@@ -1,226 +1,573 @@
-<!DOCTYPE html><html lang="en">
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>shadeDB — Ultra‑Fast Autonomous Database</title>
-<style>
-/* RESET & GLOBAL */
-* {margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif;}
-body {background:#0b0b0b; color:#eaeaea; overflow-x:hidden; line-height:1.6; scroll-behavior:smooth;}
-h1,h2,h3,h4,h5,h6 {font-weight:700;}
-a {color:inherit; text-decoration:none;}
-img {max-width:100%; display:block; object-fit:fit;}
-section {padding:80px 20px; max-width:1100px; margin:auto; position:relative; opacity:0; transform:translateY(30px); transition: all 0.8s ease-in-out;}/* HERO */
-.hero {height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; position:relative; overflow:hidden;} 
-.hero h1 {font-size:3rem; line-height:1.2;} 
-.hero p {max-width:700px; margin-top:15px; font-size:1.2rem;} 
-.gradient-float {position:absolute; width:500px; height:500px; background:radial-gradient(circle,#4f00ff40,#00000000); filter:blur(90px); animation:float 15s infinite linear; top:-100px; left:-100px;}/* FEATURES */ .features{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; margin-top:30px;} .feature-card{background:#131313; padding:25px; border:1px solid #1f1f1f; border-radius:12px; transition:0.3s; cursor:pointer; opacity:0; transform:translateY(20px);} .feature-card:hover{border-color:#4f00ff; transform:translateY(-6px) scale(1.03);}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>shadeDB — The Autonomous High-Velocity DB (Proposal + Product)</title>
 
-/* TIMELINE & ROADMAP */ .timeline{border-left:2px solid #4f00ff55; padding-left:25px; margin-top:40px;} .timeline div{margin-bottom:25px; opacity:0; transform:translateX(-20px);} .roadmap{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:25px; margin-top:30px;} .road-step{background:#131313; padding:20px; border-radius:12px; border:1px solid #222; cursor:pointer; transition:0.3s; opacity:0; transform:translateY(20px);} .road-step:hover{border-color:#00d4ff; transform:translateY(-4px) scale(1.02);}
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-/* STATS & TABLES */ .stats-comparison img {border-radius:12px; margin:20px 0;} table {width:100%; border-collapse:collapse; margin:1rem 0; background:#111; color:#ccc;} th, td {padding:10px; border:1px solid #222; text-align:center;}
+  <style>
+    /* =========================
+       GLOBAL / THEME (Product-style)
+       ========================= */
+    :root{
+      --bg-dark:#07060A;
+      --panel:#0b0b0b;
+      --muted:#9aa4b2;
+      --accent:#8a5cff;
+      --accent-2:#00d4ff;
+      --glass: rgba(255,255,255,0.03);
+      --card-glow: 0 12px 60px rgba(138,92,255,0.08);
+      --radius:16px;
+      color-scheme: dark;
+    }
 
-/* PRODUCT DECK */ .product-deck .deck-grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px;} .deck-card {background:#131313; padding:20px; border-radius:12px; border:1px solid #222; cursor:pointer; transition:0.3s; opacity:0; transform:translateY(20px);} .deck-card:hover{transform:translateY(-5px) scale(1.02); border-color:#8a5cff;} .image-placeholder {display:block; margin-top:15px; padding:0; background:#1f1f1f; border:2px dashed #4f00ff; border-radius:12px; text-align:center; font-size:0.9rem; color:#888; opacity:0; transform:scale(0.95); transition:0.6s ease-in-out;} .placeholder-svg {width:100%; height:180px; display:block; border-radius:10px; object-fit:fit;}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #03030a 0%, #071022 100%);
+      color: #e9eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      scroll-behavior:smooth;
+    }
 
-/* HERO ANIMATIONS */ .stat-counters {display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:40px;} .counter {background:#131313; padding:20px 30px; border-radius:12px; border:1px solid #222; text-align:center; opacity:0; transform:translateY(20px); transition:all 1s ease-in-out;} .counter:hover {transform:translateY(-8px) scale(1.02);} .count {font-size:1.8rem; font-weight:700; color:#8a5cff; display:inline-block; min-width:48px;}
+    /* Layout */
+    .site{
+      max-width:1200px;
+      margin:0 auto;
+      padding:28px 20px;
+    }
 
-/* SWITCH SECTION */ .switch-section ul {margin-top:20px; list-style:none; display:grid; gap:12px;} .switch-section li{padding-left:0;}
+    header.brand{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-bottom:18px;
+      position:relative;
+      z-index:10;
+    }
+    .logo{
+      width:72px;height:72px;border-radius:14px;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;
+      font-weight:800;color:#071022;font-family:Poppins, sans-serif;
+      box-shadow:var(--card-glow);
+      font-size:22px;
+    }
+    header .title{
+      font-family:Poppins, sans-serif;
+      font-weight:700;
+      font-size:18px;
+      line-height:1.05;
+    }
+    header .subtitle{
+      color:var(--muted);
+      font-size:13px;
+      margin-top:4px;
+    }
+    header .meta-right{margin-left:auto;text-align:right}
+    .kicker{
+      display:inline-block;padding:6px 10px;border-radius:999px;
+      background: linear-gradient(90deg, rgba(138,92,255,0.12), rgba(0,212,255,0.06));
+      color:var(--accent-2);font-weight:600;font-size:12px;
+    }
 
-/* INVESTOR SECTION */ .investor-grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; margin-top:25px;} .investor-card {background:#131313; padding:20px; border-radius:12px; border:1px solid #222; cursor:pointer; transition:0.3s; opacity:0; transform:translateY(20px);} .investor-card:hover{transform:translateY(-5px) scale(1.02); border-color:#00d4ff;}
+    /* HERO */
+    .hero{
+      height:86vh;
+      min-height:520px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+      border-radius:var(--radius);
+      background:
+        radial-gradient(600px 200px at 10% 10%, rgba(138,92,255,0.07), transparent 8%),
+        radial-gradient(420px 140px at 90% 80%, rgba(0,212,255,0.04), transparent 8%),
+        linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 10px 60px rgba(2,6,23,0.6);
+      padding:48px 24px;
+      margin-bottom:28px;
+    }
+    .hero h1{
+      font-family:Poppins, sans-serif;
+      font-size:48px;line-height:1.02;margin:0;
+      letter-spacing:-0.6px;
+    }
+    .hero h1 .accent{color:var(--accent);}
+    .hero p{
+      margin-top:18px;color:var(--muted);font-size:18px;max-width:900px;margin-left:auto;margin-right:auto;
+    }
+    .hero .controls{margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn-primary{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#071022;padding:12px 20px;border-radius:12px;font-weight:700;border:none;cursor:pointer;
+      box-shadow:0 10px 40px rgba(124,92,255,0.12);
+      font-family:Inter, sans-serif;
+    }
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:12px 18px;border-radius:12px;color:var(--muted);cursor:pointer}
 
-/* KEYFRAMES */ @keyframes float {0%{transform:translate(-200px,-100px);}50%{transform:translate(200px,150px);}100%{transform:translate(-200px,-100px);}} @keyframes fadeInUp {0%{opacity:0; transform:translateY(30px);}100%{opacity:1; transform:translateY(0);} }
+    .gradient-float{
+      position:absolute;width:540px;height:540px;background:radial-gradient(circle,#4f00ff40,#00000000);filter:blur(110px);
+      animation:float 18s infinite linear;top:-120px;left:-120px;opacity:0.9;pointer-events:none;
+    }
 
-/* RESPONSIVE TEXT */ @media(max-width:768px){.hero h1{font-size:2.2rem;} .hero p{font-size:1rem;}} 
-  .github-button {
-  display:inline-block;
-  padding:12px 25px;
-  background:#8a5cff;
-  color:#fff;
-  border-radius:12px;
-  text-decoration:none;
-  font-weight:600;
-  transition:0.3s;
-}
-.github-button:hover {
-  background:#6a3fd1;
-  transform:scale(1.05);
-}
+    /* SECTIONS */
+    section{
+      padding:72px 20px;
+      max-width:1100px;
+      margin:0 auto 18px auto;
+      opacity:0;transform:translateY(30px);
+      transition:all 0.9s cubic-bezier(.2,.9,.2,1);
+      border-radius:12px;
+    }
+    section.visible{opacity:1;transform:translateY(0);}
+
+    .showcase{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.03);
+      padding:36px;border-radius:12px;
+    }
+
+    h2{font-family:Poppins, sans-serif;font-size:28px;margin:0 0 12px 0}
+    p.lead{color:var(--muted);font-size:16px;margin:0 0 12px 0}
+
+    /* Features grid */
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:18px}
+    .feature{
+      background:#0f1113;padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);
+      transition:transform .28s ease, border-color .2s ease;cursor:default;
+    }
+    .feature:hover{transform:translateY(-6px);border-color:rgba(138,92,255,0.18)}
+
+    /* Roadmap timeline */
+    .roadmap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:18px}
+    .road{background:#0f1113;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .road strong{display:block;margin-bottom:6px}
+
+    /* Stats / Table */
+    .stats{display:grid;grid-template-columns:1fr 380px;gap:18px;align-items:start}
+    .stats .bench{background:#0f1012;padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .bench table{width:100%;border-collapse:collapse;color:#cbd5e1}
+    .bench th, .bench td{padding:10px;border:1px solid rgba(255,255,255,0.03);text-align:center;font-size:14px}
+    .bench th{color:var(--muted);font-weight:600}
+
+    /* Counters */
+    .counters{display:flex;gap:16px;flex-wrap:wrap;margin-top:18px;justify-content:flex-start}
+    .counter{
+      background:#0f1012;padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);min-width:160px;text-align:center;
+    }
+    .counter .num{font-family:Poppins;font-weight:700;font-size:22px;color:var(--accent);display:block}
+    .counter .label{color:var(--muted);font-size:13px;margin-top:6px}
+
+    /* Product deck */
+    .deck{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:18px}
+    .deck-card{background:#0f1012;padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .deck-card img{width:100%;height:160px;object-fit:cover;border-radius:8px;margin-top:10px;background:#111}
+
+    /* Mission / Pitch */
+    .pitch{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+    .pitch .box{background:#0f1012;padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+
+    /* Contact / Funding */
+    .contact-grid{display:grid;grid-template-columns:1fr 320px;gap:18px;margin-top:18px}
+    .card-compact{background:#0f1012;padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+
+    /* Footer */
+    footer{padding:22px 0;text-align:center;color:var(--muted);font-size:13px;margin-top:36px}
+
+    /* Animations */
+    @keyframes float{0%{transform:translate(-220px,-100px)}50%{transform:translate(200px,140px)}100%{transform:translate(-220px,-100px)}}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero h1{font-size:34px}
+      .stats{grid-template-columns:1fr}
+      .contact-grid{grid-template-columns:1fr}
+      .pitch{grid-template-columns:1fr}
+      .counters{justify-content:space-between}
+    }
+    @media (max-width:560px){
+      .hero{padding:28px}
+      .hero h1{font-size:28px}
+      .site{padding:18px}
+      section{padding:42px 12px}
+    }
   </style>
-
 </head>
-<body><!-- HERO --><div class="hero" id="hero">
-  <h1>shadeDB<br><span style="color:#8a5cff;">The Autonomous High‑Velocity Database</span></h1>
-  <p>The ultra-fast, self-optimizing Database‑as‑a‑Service engineered for developers who demand more from speed, autonomy, and intelligence.</p>
-  <div class="gradient-float" aria-hidden="true"></div>
-</div><!-- WHAT IS shadeDB --><section>
-  <h2>What Is shadeDB?</h2>
-  <p>shadeDB answers a simple question: what happens when a database stops trying to be everything… and focuses on pure speed, intelligence, and autonomy?</p>
-  <p style="margin-top:20px;">Originally developed during the evolution of shadecreed, it began as a lightweight engine designed to overcome JSON’s inability to handle duplicate keys. That evolved into a custom data engine capable of storing data in a field-value structure efficiently and retrieving them with near‑zero latency.</p>
-</section><!-- FEATURES --><section>
-  <h2>Why Developers Choose shadeDB</h2>
-  <div class="features">
-    <div class="feature-card">Ultra‑Low Latency — 0.3ms queries using under 1KB RAM.</div>
-    <div class="feature-card">Cross‑Platform Power — IoT, robotics, ML, cloud, edge, 98% uptime.</div>
-    <div class="feature-card">True Data Ownership — Built for contributor value.</div>
-    <div class="feature-card">Distributed Compute Ready — Encrypted virtual nodes stay online.</div>
-    <div class="feature-card">Vertical Receipt Storage — Complete write + rollback tracking.</div>
-    <div class="feature-card">Plug & Play Setup — Autonomous configuration in minutes.</div>
-  </div>
-</section><!-- TIMELINE --><section>
-  <h2>shadeDB Development Timeline</h2>
-  <div class="timeline">
-    <div><strong>Initial Build:</strong> 36MB compile = 51s, queries ≈ 2s.</div>
-    <div><strong>Rewrite:</strong> Streaming + filtration = massive speed gains.</div>
-    <div><strong>Current:</strong> Sub‑millisecond query engine.</div>
-  </div>
-</section><!-- VISION --><section>
-  <h2>The Vision</h2>
-  <p>shadeDB evolves into a self‑tuning, distributed, high‑intelligence database — fast, lean, scalable from embedded systems to enterprise workloads.</p>
-</section><!-- ROADMAP --><section>
-  <h2>shadeDB Roadmap</h2>
-  <div class="roadmap">
-    <div class="road-step"><strong>Beta Release</strong><br>Engine validation complete.</div>
-    <div class="road-step"><strong>Early Test Phase</strong><br>Stability & consistency checks.</div>
-    <div class="road-step"><strong>Community Test Phase</strong><br>CLI tools for contributors.</div>
-    <div class="road-step"><strong>Prototype Release</strong><br>Distributed storage integrated.</div>
-    <div class="road-step"><strong>Funding Round</strong><br>Seeking partners.</div>
-    <div class="road-step"><strong>Public Release</strong><br>Cloud‑ready stable deployment.</div>
-    <div class="road-step"><strong>Client Nodes</strong><br>Private compute node rollout.</div>
-    <div class="road-step"><strong>Token Allocation</strong><br>15% Team · 10% Investors · 5% Users · 70% Pool</div>
-    <div class="road-step"><strong>Token Launch</strong><br>Governance + rewards distribution.</div>
-    <div class="road-step"><strong>Cloud Expansion</strong><br>Multi‑cloud + edge architecture.</div>
-    <div class="road-step"><strong>Future Missions</strong><br>Hybrid architectures & decentralized intelligence.</div>
-    <div style="text-align:center; margin-top:30px;">
-    <a href="https://github.com/harkerbyte" target="_blank" class="github-button">Follow the Development</a>
-  </div>
-  </div>
-</section><!-- STATISTICS --><section class="stats-comparison">
-  <h2 style="color:#00d4ff;margin-bottom:1rem;">Statistical Breakdown</h2>
-  <!-- image placeholder as <img> so you can replace src with your own images -->
-  <img class="image-placeholder placeholder-svg" alt="Benchmark chart placeholder" src="imgs/stats.png" />  <h3>1. Central Tendency (Speed)</h3>
-  <p>Mean query latency shows ShadeDB is ~66% faster at typical workloads.</p>
-  <p>Median latency (P50): <strong>ShadeDB ≈ 0.35 ms</strong> vs <strong>PostgreSQL ≈ 0.9 ms</strong></p>  <h3>2. Tail Behavior (Consistency)</h3>
-  <p>ShadeDB’s 95th percentile latency (<strong>0.112 ms</strong>) is <strong>9–27× tighter</strong> than PostgreSQL.</p>
-  <p>P99 latency spikes: ShadeDB <strong>4.4 ms</strong> vs PostgreSQL <strong>~7 ms</strong></p>  <h3>3. Throughput Scaling</h3>
-  <p>At <strong>2,241 queries/sec</strong>, ShadeDB delivers <strong>49–180% higher throughput</strong> under equal load.</p>  <h3>4. Latency Variance</h3>
-  <table>
-    <tr><th>Percentile</th><th>ShadeDB (ms)</th><th>PostgreSQL (ms)</th><th>Δ</th><th>Ratio</th></tr>
-    <tr><td>P50</td><td>0.35</td><td>0.9</td><td>-0.55</td><td>2.57× faster</td></tr>
-    <tr><td>P95</td><td>0.112</td><td>2.0</td><td>-1.888</td><td>17.8× faster</td></tr>
-    <tr><td>P99</td><td>4.4</td><td>7.0</td><td>-2.6</td><td>1.6× faster</td></tr>
-  </table>  <h3>5. Query-per-Second Efficiency</h3>
-  <p><strong>ShadeDB:</strong> 2,241 / 0.358 ≈ 6,260</p>
-  <p><strong>PostgreSQL:</strong> 1,000 / 0.9 ≈ 1,111</p>
-  <p>ShadeDB shows <strong>≈ 5.6× higher efficiency</strong>.</p>
-</section><!-- MISSION --><section class="mission-section">
-  <h2>The ShadeDB Mission</h2>
-  <p>ShadeDB stands on a simple truth: raw speed is nothing without absolute control. Modern systems demand databases that respond instantly, scale intelligently, and maintain consistency under extreme load.</p>
-  <p>Architecture eliminates RAM‑bound query paths, streams operations at CPU speed, and compresses tail latency into a compact, predictable curve.</p>
-  <p><strong>Rewrite the rules, not follow them.</strong> ShadeDB feels like a living extension of the system — reactive, anticipatory, and brutally efficient.</p>
-</section><!-- HERO COUNTERS --><section class="hero-animations">
-  <div class="stat-counters">
-    <div class="counter" data-target="0.3"><span class="count" data-target="0.3">0.3</span> ms<br>Avg Query Latency</div>
-    <div class="counter" data-target="2241"><span class="count" data-target="2241">2241</span><br>Queries / Second</div>
-    <div class="counter" data-target="98"><span class="count" data-target="98">98</span>%<br>Uptime Across Environments</div>
-  </div>
-</section><!-- PRODUCT DECK --><section class="product-deck">
-  <h2>ShadeDB Product Deck</h2>
-  <div class="deck-grid">
-    <div class="deck-card">
-      <h3>Self‑Optimizing Engine</h3>
-      <p>Real‑time adaptive pathways rewrite execution routes minimizing RAM impact and CPU stalls.</p>
-      <!-- image placeholder as <img> so you can replace src with your own images -->
-    </div>
-    <div class="deck-card">
-      <h3>Distributed Compute Layer</h3>
-      <p>Encrypted virtual nodes mirror state across devices — even offline.</p>
-      <img class="image-placeholder placeholder-svg" alt="Distributed Node Mesh" src="imgs/distribution.png" />
-    </div>
-    <div class="deck-card">
-      <h3>Vertical Receipts</h3>
-      <p>Every write is committed across isolated disk layers for full rollback & auditability.</p>
-      <img class="image-placeholder placeholder-svg" alt="Vertical Storage Layers" src="imgs/vertical.png" />
-    </div>
-    <div class="deck-card">
-      <h3>High‑Density Throughput</h3>
-      <p>Query pipeline maintains microsecond responsiveness while scaling horizontally.</p>
-      <img class="image-placeholder placeholder-svg" alt="Throughput Density" src="imgs/throughput.png" />
-    </div>
-  </div>
-</section><!-- ENGINEER SWITCH --><section class="switch-section"><h2>Why Engineers Should Switch to ShadeDB</h2><ul><li>Near-zero query overhead powered by CPU-streamed filtration.</li><li>Highly stable latency profile with tightly compressed P50–P95 variance.</li><li>Consistent memory usage with a fixed 1KB maximum per query.</li><li>Modular distributed-node design enabling immediate horizontal scaling.</li><li>Unified architecture suitable for IoT, edge, and cloud environments without reconfiguration.</li><li>Integrated command filtration system that silently rejects malformed or malicious queries before they reach the engine.</li><li>Disk-monitoring algorithm that validates insert and overwrite operations to eliminate corruption risks during heavy write cycles.</li><li>Divide-and-conquer query execution that breaks operations into optimized microsegments for significantly faster results.</li><li>Closed-source internal architecture that prevents adversaries from mapping the system’s structure, reducing potential attack vectors.</li></ul></section><!-- INVESTOR --><section class="investor-section">
-  <h2>For Investors & Strategic Partners</h2>
-  <p>ShadeDB is foundation-level technology redefining distributed storage, edge compute, and ultra-low-latency systems.</p>
-  <div class="investor-grid">
-    <div class="investor-card">
-      <h3>Market Position</h3>
-      <p>Unchallenged niche between high-speed in-memory DBs and traditional SQL engines.</p>
-    </div>
-    <div class="investor-card">
-      <h3>Scaling Model</h3>
-      <p>Network contribution earns increasing ownership — aligned with long-term decentralization goals.</p>
-    </div>
-    <div class="investor-card">
-      <h3>Performance Advantage</h3>
-      <p>2.26× normalized efficiency index over PostgreSQL under standardized load.</p>
-    </div>
-  </div>
-</section><!-- SCROLL ANIMATIONS & COUNTERS --><script>
-// Elements to animate
-const sections = document.querySelectorAll('section, .feature-card, .deck-card, .road-step, .investor-card, .image-placeholder, .timeline div, .counter');
-const counters = document.querySelectorAll('.stat-counters .count');
+<body>
 
-// Helper: apply staggered animation classes
-function reveal(el, delay = 0) {
-  el.style.opacity = '1';
-  el.style.transform = 'translateY(0)';
-  el.style.transitionDelay = delay + 'ms';
-}
+  <div class="site">
 
-function revealLeft(el, delay = 0) {
-  el.style.opacity = '1';
-  el.style.transform = 'translateX(0)';
-  el.style.transitionDelay = delay + 'ms';
-}
+    <!-- Header (branding + small meta) -->
+    <header class="brand" role="banner">
+      <div class="logo">SD</div>
+      <div>
+        <div class="title">shadeDB — The Autonomous High-Velocity Database</div>
+        <div class="subtitle">Applicant: <strong>Sherifdeen Olanrewaju</strong> • Duration: 6 months • Funding: <strong>€8,000–€12,000</strong></div>
+      </div>
+      <div class="meta-right">
+        <div class="kicker">Proprietary · Infrastructure Layer</div>
+        <div class="subtitle" style="margin-top:6px">Stage: Working prototype (mobile-built)</div>
+      </div>
+    </header>
 
-function animateOnScroll(){
-  const triggerBottom = window.innerHeight * 0.85;
-  sections.forEach((sec, i) => {
-    if(sec.getBoundingClientRect().top < triggerBottom){
-      // stagger more for grids
-      const delay = (i % 6) * 80;
-      if(sec.classList.contains('feature-card') || sec.classList.contains('deck-card') || sec.classList.contains('road-step') || sec.classList.contains('investor-card') || sec.classList.contains('image-placeholder') || sec.classList.contains('counter')) reveal(sec, delay);
-      else if(sec.parentElement && sec.parentElement.classList && sec.parentElement.classList.contains('timeline')) revealLeft(sec, (i%4)*70);
-      else reveal(sec);
-    }
-  });
+    <!-- HERO -->
+    <section id="hero" class="hero" aria-labelledby="hero-title">
+      <div style="width:100%;max-width:980px;margin:0 auto;">
+        <h1 id="hero-title">shadeDB<br><span class="accent">The Autonomous High-Velocity Database</span></h1>
+        <p class="lead">Ultra-fast, self-optimizing DBaaS engineered for developers and builders who need predictable low latency, zero configuration, and strong data ownership.</p>
 
-  // counters
-  counters.forEach(counter => {
-    const parent = counter.closest('.counter') || counter.parentElement;
-    if(parent.getBoundingClientRect().top < triggerBottom && !counter.classList.contains('started')){
-      counter.classList.add('started');
-      const raw = counter.getAttribute('data-target');
-      const target = parseFloat(raw);
-      let count = 0;
-      // if fractional (like 0.3), animate to one decimal place
-      const isFloat = raw.indexOf('.') !== -1;
-      const steps = 200;
-      const increment = target / steps;
-      const update = () => {
-        count += increment;
-        if(count < target){
-          counter.innerText = isFloat ? (Math.round(count*10)/10).toFixed(1) : Math.floor(count);
-          requestAnimationFrame(update);
-        } else {
-          counter.innerText = isFloat ? target.toFixed(1) : Math.round(target).toString();
+        <div class="controls">
+          <button class="btn-primary" onclick="document.getElementById('deliverables').scrollIntoView({behavior:'smooth'})">See Deliverables</button>
+          <a class="btn-ghost" href="https://github.com/harkerbyte" target="_blank" rel="noopener">Follow Development →</a>
+        </div>
+
+        <div class="gradient-float" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- WHAT IS -->
+    <section id="what" class="showcase" aria-labelledby="what-title">
+      <h2 id="what-title">What is shadeDB?</h2>
+      <p class="lead">shadeDB stops trying to be everything and focuses on raw speed, autonomy, and developer ergonomics — a field→value storage engine with a compact SNL (Structured Native Language) interface and a TLS/HTTPS API gateway.</p>
+
+      <div style="margin-top:16px">
+        <p>Originally prototyped during the evolution of shadecreed, the engine solved practical problems such as JSON duplicate-key handling and extreme memory predictability. The result is a compact engine that runs with sub-millisecond median latency on real hardware and scales horizontally through encrypted virtual nodes.</p>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" aria-labelledby="features-title">
+      <h2 id="features-title">Core Capabilities</h2>
+      <p class="lead">Designed for mobile-first devs, IoT, edge compute, and latency-sensitive workloads.</p>
+
+      <div class="features" aria-hidden="false">
+        <div class="feature"><strong>Ultra-Low Latency</strong><div style="color:var(--muted);margin-top:6px">Sub-millisecond median, microsecond tail behavior</div></div>
+        <div class="feature"><strong>Field → Value Model</strong><div style="color:var(--muted);margin-top:6px">Predictable memory per query (≤1KB)</div></div>
+        <div class="feature"><strong>Vertical Receipts</strong><div style="color:var(--muted);margin-top:6px">Write auditing, rollback across isolated disk layers</div></div>
+        <div class="feature"><strong>Distributed Compute Layer</strong><div style="color:var(--muted);margin-top:6px">Encrypted virtual nodes mirror state even when offline</div></div>
+        <div class="feature"><strong>Plug & Play</strong><div style="color:var(--muted);margin-top:6px">Autonomous configuration, TLS/HTTPS API</div></div>
+        <div class="feature"><strong>Closed-source Security Posture</strong><div style="color:var(--muted);margin-top:6px">Reduces information leakage vectors for sensitive deployments</div></div>
+      </div>
+    </section>
+
+    <!-- TECH / ARCHITECTURE -->
+    <section id="architecture" class="showcase" aria-labelledby="arch-title">
+      <h2 id="arch-title">Engine Architecture & SNL</h2>
+      <p class="lead">Small binary-tree storage engine, custom indexing, and a minimal Structured Native Language (SNL) for simple commands.</p>
+
+      <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:18px">
+        <div>
+          <h3 style="margin:0 0 8px 0">Storage Engine</h3>
+          <ul style="color:var(--muted);padding-left:18px">
+            <li>Binary-tree based storage structure</li>
+            <li>Custom indexes for predictable latency</li>
+            <li>Write-Ahead Log (WAL) optimized for overwrites + append</li>
+            <li>Field → Value native model</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="margin:0 0 8px 0">Security & API</h3>
+          <ul style="color:var(--muted);padding-left:18px">
+            <li>TLS-encrypted HTTPS endpoints</li>
+            <li>Auth tokens & multi-tenant isolation</li>
+            <li>Field-level sensitivity controls and masking</li>
+            <li>Query pre-filtering to reject malformed/malicious inputs</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top:14px">
+        <h3 style="margin:0 0 6px 0">SNL — example usage</h3>
+        <pre style="background:#06121a;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);color:#cfe8ff;overflow:auto">
+where username is shade
+→ returns age and other non-sensitive fields
+
+where age is &lt; 18
+→ returns list of results
+
+get username shade
+→ get all data for that username
+
+authenticate password entered_password where username shade
+→ returns login token
+        </pre>
+      </div>
+    </section>
+
+    <!-- DELIVERABLES -->
+    <section id="deliverables" aria-labelledby="deliverables-title">
+      <h2 id="deliverables-title">Deliverables & Targets</h2>
+      <p class="lead">What we will ship with the funded program (6 months).</p>
+
+      <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="showcase">
+          <h3 style="margin-top:0">Code & Deployables</h3>
+          <ul style="color:var(--muted);padding-left:18px">
+            <li>Production-ready prototype (code + tests)</li>
+            <li>Public API gateway (HTTPS/TLS)</li>
+            <li>SNL parser & executor</li>
+            <li>Multi-tenant DB provisioning & CLI/dashboard</li>
+          </ul>
+        </div>
+
+        <div class="showcase">
+          <h3 style="margin-top:0">Performance & Reliability Targets</h3>
+          <ul style="color:var(--muted);padding-left:18px">
+            <li>Predictable latency target: <strong>0.3–1.2 ms</strong> on real hardware</li>
+            <li>Availability target: <strong>99%+</strong></li>
+            <li>Memory per query: ≤ <strong>1 KB</strong></li>
+            <li>Durability via WAL + vertical receipts</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS / BENCHMARKS -->
+    <section id="stats" aria-labelledby="stats-title">
+      <h2 id="stats-title">Statistical Breakdown</h2>
+      <p class="lead">Representative benchmark summary vs PostgreSQL under standardized workloads.</p>
+
+      <div class="stats" style="margin-top:16px">
+        <div class="bench">
+          <h3 style="margin:0 0 10px 0;color:var(--accent-2)">Latency Percentiles</h3>
+          <table aria-describedby="bench-desc">
+            <thead>
+              <tr><th>Percentile</th><th>shadeDB (ms)</th><th>PostgreSQL (ms)</th><th>Δ</th><th>Ratio</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>P50</td><td>0.35</td><td>0.9</td><td>-0.55</td><td>2.57×</td></tr>
+              <tr><td>P95</td><td>0.112</td><td>2.0</td><td>-1.888</td><td>17.8×</td></tr>
+              <tr><td>P99</td><td>4.4</td><td>7.0</td><td>-2.6</td><td>1.6×</td></tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top:12px">
+            <h4 style="margin:6px 0 8px 0">Throughput</h4>
+            <p style="color:var(--muted);margin:0">At <strong>2,241 qps</strong>, shadeDB delivers higher throughput and efficiency vs PostgreSQL. Efficiency ≈ <strong>≈ 5.6×</strong> (normalized)</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="counters">
+            <div class="counter">
+              <span class="num" data-target="0.3">0.3</span>
+              <div class="label">Avg Query Latency (ms)</div>
+            </div>
+
+            <div class="counter">
+              <span class="num" data-target="2241">2241</span>
+              <div class="label">Queries / Second</div>
+            </div>
+
+            <div class="counter">
+              <span class="num" data-target="98">98</span>
+              <div class="label">Uptime (%)</div>
+            </div>
+          </div>
+
+          <div style="margin-top:18px" class="showcase">
+            <h4 style="margin:0 0 8px 0">Prototype notes</h4>
+            <p style="color:var(--muted);margin:0">Prototype developed on constrained hardware (mobile). Funding will enable concurrency, TLS performance testing, and long-running durability experiments.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCT DECK -->
+    <section id="product" aria-labelledby="product-title">
+      <h2 id="product-title">Product Deck</h2>
+      <p class="lead">Key system modules and differentiators.</p>
+
+      <div class="deck">
+        <div class="deck-card">
+          <h3 style="margin:0">Self-Optimizing Engine</h3>
+          <p style="color:var(--muted);margin-top:8px">Adaptive execution pathways rewrite routes in real time to reduce RAM pressure and CPU stalls.</p>
+        </div>
+
+        <div class="deck-card">
+          <h3 style="margin:0">Distributed Compute Layer</h3>
+          <p style="color:var(--muted);margin-top:8px">Encrypted virtual nodes keep shards consistent across devices — resilient to intermittent connectivity.</p>
+          <img alt="Distributed Node Mesh" src="imgs/distribution.png" onerror="this.style.display='none'">
+        </div>
+
+        <div class="deck-card">
+          <h3 style="margin:0">Vertical Receipts</h3>
+          <p style="color:var(--muted);margin-top:8px">Every write committed across isolated disk layers for full rollback and auditability.</p>
+          <img alt="Vertical Storage Layers" src="imgs/vertical.png" onerror="this.style.display='none'">
+        </div>
+
+        <div class="deck-card">
+          <h3 style="margin:0">High-Density Throughput</h3>
+          <p style="color:var(--muted);margin-top:8px">Microsecond responsiveness while scaling horizontally through sharding & routing microsegments.</p>
+          <img alt="Throughput Density" src="imgs/throughput.png" onerror="this.style.display='none'">
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap" aria-labelledby="roadmap-title">
+      <h2 id="roadmap-title">Roadmap</h2>
+      <p class="lead">Planned milestones from prototype to public release.</p>
+
+      <div class="roadmap-grid">
+        <div class="road"><strong>Beta Release</strong><div style="color:var(--muted);margin-top:6px">Engine validation complete</div></div>
+        <div class="road"><strong>Early Test Phase</strong><div style="color:var(--muted);margin-top:6px">Stability & consistency checks</div></div>
+        <div class="road"><strong>Community Test Phase</strong><div style="color:var(--muted);margin-top:6px">CLI tools for contributors</div></div>
+        <div class="road"><strong>Prototype Release</strong><div style="color:var(--muted);margin-top:6px">Distributed storage integrated</div></div>
+        <div class="road"><strong>Funding Round</strong><div style="color:var(--muted);margin-top:6px">Seeking partners</div></div>
+        <div class="road"><strong>Public Release</strong><div style="color:var(--muted);margin-top:6px">Cloud-ready stable deployment</div></div>
+        <div class="road"><strong>Client Nodes</strong><div style="color:var(--muted);margin-top:6px">Private compute node rollout</div></div>
+        <div class="road"><strong>Token Allocation</strong><div style="color:var(--muted);margin-top:6px">15% Team · 10% Investors · 5% Users · 70% Pool</div></div>
+        <div class="road"><strong>Token Launch</strong><div style="color:var(--muted);margin-top:6px">Governance & rewards distribution</div></div>
+        <div class="road"><strong>Cloud Expansion</strong><div style="color:var(--muted);margin-top:6px">Multi-cloud + edge</div></div>
+        <div class="road"><strong>Future Missions</strong><div style="color:var(--muted);margin-top:6px">Hybrid architectures & decentralized intelligence</div></div>
+      </div>
+    </section>
+
+    <!-- WHY FUNDING IS NECESSARY -->
+    <section id="funding" aria-labelledby="funding-title">
+      <h2 id="funding-title">Funding Request & Use of Funds</h2>
+      <p class="lead">Why we need funding and how it will be used.</p>
+
+      <div class="showcase" style="margin-top:12px">
+        <h3 style="margin:0 0 8px 0">Summary</h3>
+        <p style="color:var(--muted);margin:0">Requested: <strong>€8,000–€12,000</strong> — to move the mobile prototype to production-grade software: concurrency tests, TLS performance, multi-threaded benchmarks, long-run durability experiments, and documentation/packaging for early partners.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px">
+        <div class="card-compact"><strong>Prototype to Prod</strong><div style="color:var(--muted);margin-top:8px">Add multi-threading, persistence tuning, and CI tests</div></div>
+        <div class="card-compact"><strong>Security & TLS</strong><div style="color:var(--muted);margin-top:8px">TLS endpoints, key management, and penetration testing</div></div>
+        <div class="card-compact"><strong>Benchmarks</strong><div style="color:var(--muted);margin-top:8px">Large-scale concurrency and throughput testing</div></div>
+      </div>
+    </section>
+
+    <!-- FOR INVESTORS -->
+    <section id="investors" aria-labelledby="investors-title">
+      <h2 id="investors-title">For Investors & Strategic Partners</h2>
+      <p class="lead">shadeDB sits between high-speed in-memory systems and general-purpose SQL engines: a differentiated niche with strong margins and product-market fit for mobile-first apps and edge compute.</p>
+
+      <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="box pitch" style="grid-column:span 2">
+          <div class="box" style="background:transparent;padding:0">
+            <h3 style="margin:0">Market Opportunity</h3>
+            <p style="color:var(--muted);margin-top:8px">DBaaS market estimates vary; consensus points to sustained rapid growth, with multiples over the next 5–10 years. shadeDB addresses low-ops, low-latency demands in mobile and edge markets.</p>
+          </div>
+        </div>
+
+        <div class="card-compact">
+          <h4 style="margin:0 0 6px 0">Market Position</h4>
+          <p style="color:var(--muted);margin:0">Niche between in-memory & SQL engines.</p>
+        </div>
+        <div class="card-compact">
+          <h4 style="margin:0 0 6px 0">Scaling Model</h4>
+          <p style="color:var(--muted);margin:0">Network contribution earns ownership; long-term decentralization goals.</p>
+        </div>
+        <div class="card-compact">
+          <h4 style="margin:0 0 6px 0">Performance Advantage</h4>
+          <p style="color:var(--muted);margin:0">~2.26× normalized efficiency vs PostgreSQL under standardized tests.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact & Next Steps</h2>
+      <p class="lead">Interested investors or partners can reach out directly to coordinate pilots, benchmarks, or due diligence.</p>
+
+      <div class="contact-grid">
+        <div class="card-compact">
+          <h3 style="margin:0 0 8px 0">Contact</h3>
+          <p style="color:var(--muted);margin:0">Applicant: <strong>Sherifdeen Adesola</strong><br>Email: <strong>adesolasherifdeen3@gmail.com</strong></p>
+          <div style="margin-top:12px">
+            <a class="btn-primary" href="mailto:adesolasherifdeen3@gmail.com">Email the Applicant</a>
+          </div>
+        </div>
+
+        <div class="card-compact">
+          <h3 style="margin:0 0 8px 0">Quick Pitch</h3>
+          <p style="color:var(--muted);margin:0">Instant DB for builders. Learn SNL in minutes. No ops, no SQL.</p>
+          <div style="margin-top:12px">
+            <a class="btn-ghost" href="https://harkerbyte.github.io/shadeDB/" target="_blank" rel="noopener">View Roadmap →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div style="margin-bottom:8px">© <strong>shadeDB</strong> — Built by Sherifdeen Olanrewaju</div>
+      <div style="color:var(--muted)">Follow development: <a href="https://github.com/harkerbyte" style="color:var(--accent-2);text-decoration:underline" target="_blank" rel="noopener">github.com/harkerbyte</a></div>
+    </footer>
+
+  </div><!-- .site -->
+
+  <!-- =========================
+       SCRIPTS: reveal on scroll + counters
+       ========================= -->
+  <script>
+    // Reveal sections on scroll
+    const sections = document.querySelectorAll('section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(e.isIntersecting) {
+          e.target.classList.add('visible');
         }
-      };
-      update();
-    }
-  });
-}
+      });
+    }, {threshold: 0.12});
+    sections.forEach(s=>observer.observe(s));
 
-window.addEventListener('scroll', animateOnScroll);
-window.addEventListener('load', () => { animateOnScroll(); /* reveal hero immediately */ const hero = document.querySelector('.hero'); if(hero){ hero.style.opacity = '1'; hero.style.transform = 'translateY(0)'; }});
-</script></body>
+    // Counter animation
+    const counters = document.querySelectorAll('.num');
+    counters.forEach(node=>{
+      const raw = node.getAttribute('data-target');
+      if(!raw) return;
+      const isFloat = raw.includes('.');
+      const target = parseFloat(raw);
+      let started = false;
+      const parent = node.closest('.counter') || node.parentElement;
+      const io = new IntersectionObserver((ents, ob)=>{
+        ents.forEach(en=>{
+          if(en.isIntersecting && !started){
+            started = true;
+            let count = 0;
+            const steps = 180;
+            const inc = target/steps;
+            const step = ()=>{
+              count += inc;
+              if(count < target){
+                node.innerText = isFloat ? (Math.round(count*10)/10).toFixed(1) : Math.floor(count);
+                requestAnimationFrame(step);
+              } else {
+                node.innerText = isFloat ? target.toFixed(1) : Math.round(target).toString();
+              }
+            };
+            step();
+            ob.disconnect();
+          }
+        });
+      }, {threshold:0.4});
+      io.observe(parent);
+    });
+
+    // Smooth keyboard-friendly anchor focus
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); el.focus({preventScroll:true}); }
+      });
+    });
+  </script>
+</body>
 </html>
